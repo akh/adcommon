@@ -1,5 +1,4 @@
 require 'fileutils'
-require 'logger'
 
 def info(message)
   Logger.new(STDOUT).info ">>>>> #{message}\n"

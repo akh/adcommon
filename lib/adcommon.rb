@@ -1,11 +1,11 @@
 module NAME
-  VERSION = '0.0.1'
+  VERSION = '0.0.2'
 end
 
 
 libs = %w(uri)
 libs.each	{ |lib| require lib }
 
-files = %w(infra url_builder)
 adcommon_dir = File.expand_path('adcommon', __dir__)
-files.each { |file| require File.expand_path(file, adcommon_dir)}
+require File.expand_path('infra', adcommon_dir)
+require_dir adcommon_dir
