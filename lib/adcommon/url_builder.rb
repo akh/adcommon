@@ -2,6 +2,13 @@ require "uri"
 
 module ADC
   class UrlBuilder
+    def build_from_config(config, extra_params = nil)
+      query_params = extra_params || {}
+      config[:query_params].each { |item| query_params[item[:name]] = item[:value] }
+      add_fragment(config[:fragment]) if config[:fragment]
+      add_base(config[:base_url]).add_params(query_params).build      
+    end
+
     def add_base(base_url)
       @base_url = URI::parse(base_url)
       self
