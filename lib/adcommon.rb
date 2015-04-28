@@ -1,5 +1,5 @@
 module NAME
-  VERSION = '0.0.2.2'
+  VERSION = '0.0.2.3'
 end
 
 

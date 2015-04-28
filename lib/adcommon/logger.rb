@@ -23,7 +23,7 @@ module ADC
     VALID_ENV = %w(test production)
     VALID_ENV << DEFAULT_CONFIG[:env]
 
-    VALID_LEVELS = %w(error warn info debug)
+    VALID_LEVELS = %w(fatal error warn info debug)
     VALID_LEVELS.each do |level|
       define_method level do |message|
         log(message, level)
@@ -64,11 +64,21 @@ module ADC
       raise ADC::Error::InvalidLoggerConfig.new message      
     end
 
-    def log(message, level)      
+    LEVEL_MAP = {
+      'fatal' => ::Logger::FATAL,
+      'error' => ::Logger::ERROR,
+      'warn' => ::Logger::WARN,
+      'info' => ::Logger::INFO,
+      'debug' => ::Logger::DEBUG
+    }
+
+    def log(message, level)
       ::Logger.new(STDOUT).send(level, message) if @env == DEFAULT_CONFIG[:env]
       FileUtils.mkdir_p @dir unless File.exist? @dir
       File.open(@file, File::WRONLY | File::APPEND | File::CREAT) do |f|
-        ::Logger.new(f, 10, 4096000).send(level, message)
+        logger = ::Logger.new(f, @file_count, @file_size)
+        logger.level = LEVEL_MAP[level]
+        logger.send(level, message)
       end
     end
   end
