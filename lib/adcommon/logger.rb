@@ -25,7 +25,7 @@ module ADC
 
     VALID_LEVELS = %w(error warn info debug)
     VALID_LEVELS.each do |level|
-      define_method level do |message, level|
+      define_method level do |message|
         log(message, level)
       end
     end
