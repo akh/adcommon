@@ -23,7 +23,12 @@ module ADC
       @params ||= {}
       query_str = URI::encode_www_form(@params)
       URI::HTTP.build(host: @base_url.host, port: @base_url.port, 
-        path: @base_url.path, query: query_str, fragment: @fragment).to_s
+        path: "#{@base_url.path}#{@extra_path}", query: query_str, fragment: @fragment).to_s
+    end
+
+    def add_path(path)
+      @extra_path = path
+      self
     end
 
     def add_fragment(fragment)

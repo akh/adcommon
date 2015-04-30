@@ -45,6 +45,18 @@ class UrlBuilderTest < Minitest::Test
     assert_equal expected_url, url
   end
 
+  def test_build_url_with_extra_path
+    extra_path = '/extra_path/for_some_reason'
+    expected_url = "#{@base_url}#{extra_path}?#{@param_key}=#{@encoded_content}"
+    url_builder = ADC::UrlBuilder.new
+    url = url_builder
+               .add_base(@base_url)
+               .add_path(extra_path)
+               .add_params(@param_key => @original_content)
+               .build
+    assert_equal expected_url, url
+  end
+
   def test_build_from_config
     param_1_name  = 'scene'
     param_1_value = '10000005'
